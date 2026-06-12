@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LexPilot 企业 AI 法务平台原型</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">L</div>
+          <div>
+            <strong>LexPilot</strong>
+            <span>AI 法务工作台</span>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="主导航">
+          <button class="nav-item active" data-view="overview">
+            <span class="icon">⌂</span><span>工作台</span>
+          </button>
+          <button class="nav-item" data-view="review">
+            <span class="icon">⌕</span><span>合同审查</span>
+          </button>
+          <button class="nav-item legal-only" data-view="knowledge">
+            <span class="icon">?</span><span>企业法律知识库</span>
+          </button>
+          <button class="nav-item" data-view="legalqa">
+            <span class="icon">Q</span><span>AI 法律问答</span>
+          </button>
+          <button class="nav-item" data-view="approval">
+            <span class="icon">✓</span><span>审批协同</span>
+          </button>
+          <button class="nav-item" data-view="dashboard">
+            <span class="icon">▦</span><span>风险看板</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-card">
+          <p>本月节省法务工时</p>
+          <strong>186.5h</strong>
+          <div class="mini-bar"><span style="width: 76%"></span></div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">企业 AI 法务知识库与合同审查平台</p>
+            <h1 id="pageTitle">工作台</h1>
+          </div>
+          <div class="top-actions">
+            <label class="role-filter">
+              <span>当前角色</span>
+              <select id="roleSelect">
+                <option value="legal" selected>法务</option>
+                <option value="business">业务</option>
+              </select>
+            </label>
+            <button class="ghost-button" id="openDemo">演示流程</button>
+            <button class="primary-button" data-view-jump="review">新建审查</button>
+          </div>
+        </header>
+
+        <section class="view active" id="overview">
+          <div class="metric-grid">
+            <article class="metric-card">
+              <span>待处理合同</span>
+              <strong>24</strong>
+              <em>较昨日 -18%</em>
+            </article>
+            <article class="metric-card">
+              <span>高风险条款</span>
+              <strong>37</strong>
+              <em class="warning">需法务复核</em>
+            </article>
+            <article class="metric-card">
+              <span>AI 建议采纳率</span>
+              <strong>82%</strong>
+              <em>近 30 天</em>
+            </article>
+            <article class="metric-card">
+              <span>平均审查时长</span>
+              <strong>14m</strong>
+              <em>人工流程约 2.6h</em>
+            </article>
+          </div>
+
+          <div class="two-column">
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>今日审查队列</h2>
+                  <p>AI 已预审，法务只需聚焦高风险项</p>
+                </div>
+                <button class="text-button" data-view-jump="approval">查看全部</button>
+              </div>
+              <div class="contract-list">
+                <button class="contract-row selected" data-contract="采购框架协议">
+                  <span class="risk high">高</span>
+                  <div>
+                    <strong>采购框架协议</strong>
+                    <p>付款周期、违约责任、知识产权归属异常</p>
+                  </div>
+                  <time>09:42</time>
+                </button>
+                <button class="contract-row" data-contract="SaaS 服务订阅协议">
+                  <span class="risk medium">中</span>
+                  <div>
+                    <strong>SaaS 服务订阅协议</strong>
+                    <p>SLA、数据处理、自动续费条款待确认</p>
+                  </div>
+                  <time>10:16</time>
+                </button>
+                <button class="contract-row" data-contract="渠道合作协议">
+                  <span class="risk low">低</span>
+                  <div>
+                    <strong>渠道合作协议</strong>
+                    <p>模板匹配度 91%，建议补充反商业贿赂条款</p>
+                  </div>
+                  <time>11:03</time>
+                </button>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>AI 风险摘要</h2>
+                  <p id="summarySub">采购框架协议 · 6 项风险</p>
+                </div>
+                <span class="status-pill">待复核</span>
+              </div>
+              <div class="risk-summary">
+                <div class="score-ring"><span id="riskScore">86</span><small>风险分</small></div>
+                <ul id="summaryList">
+                  <li>付款周期超出公司采购合同基准 45 天</li>
+                  <li>违约责任上限缺失，存在无限责任风险</li>
+                  <li>交付物知识产权归属表述不明确</li>
+                </ul>
+              </div>
+              <button class="primary-button full" data-view-jump="review">进入审查</button>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="review">
+          <div class="review-layout">
+            <section class="panel upload-panel">
+              <div class="panel-head">
+                <div>
+                  <h2>合同智能审查</h2>
+                  <p>上传合同后，AI 将结合企业规则库和法规知识库生成审查意见</p>
+                </div>
+                <span class="status-pill blue">RAG + OCR + 规则引擎</span>
+              </div>
+
+              <div class="upload-box" id="uploadBox">
+                <div class="upload-icon">↑</div>
+                <strong>点击模拟上传合同</strong>
+                <p>支持 PDF / Word / 图片扫描件，原型中会载入示例合同</p>
+              </div>
+
+              <div class="ai-progress" id="aiProgress">
+                <div class="progress-step done">文本解析</div>
+                <div class="progress-step done">条款识别</div>
+                <div class="progress-step active">风险比对</div>
+                <div class="progress-step">生成建议</div>
+              </div>
+
+              <div class="document-preview">
+                <div class="doc-line wide"></div>
+                <p><mark>第 8.2 条：甲方逾期付款时，乙方有权暂停服务且不承担任何责任。</mark></p>
+                <div class="doc-line"></div>
+                <p><mark class="blue-mark">第 12.1 条：项目成果及衍生成果的知识产权归双方共有。</mark></p>
+                <div class="doc-line short"></div>
+              </div>
+            </section>
+
+            <aside class="panel insight-panel">
+              <h2>审查意见</h2>
+              <div class="issue-card high">
+                <div>
+                  <strong>违约责任过重</strong>
+                  <span>高风险</span>
+                </div>
+                <p>乙方免责范围过宽，建议增加因乙方原因造成损失时的赔偿责任。</p>
+                <button class="text-button apply-suggestion">采纳修改建议</button>
+              </div>
+              <div class="issue-card medium">
+                <div>
+                  <strong>知识产权归属不清</strong>
+                  <span>中风险</span>
+                </div>
+                <p>建议区分既有知识产权、项目成果和衍生成果，避免后续争议。</p>
+                <button class="text-button apply-suggestion">采纳修改建议</button>
+              </div>
+              <div class="citation-box">
+                <strong>引用依据</strong>
+                <p>《采购合同审查指引》第 4.3 条</p>
+                <p>公司模板库：技术服务合同 V3.2</p>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view legal-only" id="knowledge">
+          <div class="knowledge-page">
+            <section class="panel kb-upload-panel">
+              <div class="panel-head">
+                <div>
+                  <h2>企业法律知识库</h2>
+                  <p>上传合同模板、制度文件、历史案例、法律法规，系统会自动切分、标签化、向量化并支持语义检索。</p>
+                </div>
+                <span class="status-pill blue">仅法务可见</span>
+              </div>
+
+              <div class="kb-type-grid">
+                <button class="kb-type active" data-doc-type="合同模板">合同模板</button>
+                <button class="kb-type" data-doc-type="制度文件">制度文件</button>
+                <button class="kb-type" data-doc-type="历史案例">历史案例</button>
+                <button class="kb-type" data-doc-type="法律法规">法律法规</button>
+              </div>
+
+              <div class="kb-uploader" id="kbUploader">
+                <div class="upload-icon">↑</div>
+                <div>
+                  <strong>上传 Word 文件生成知识条目</strong>
+                  <p>支持 .doc / .docx。文件必须包括合同标题、目录、小标题，系统会校验结构完整性。</p>
+                </div>
+              </div>
+
+              <div class="kb-process" id="kbProcess">
+                <div class="kb-step" data-step="0"><span></span><strong>结构校验</strong><p>识别合同标题、目录、小标题</p></div>
+                <div class="kb-step" data-step="1"><span></span><strong>自动切分</strong><p>按章节与条款拆成知识片段</p></div>
+                <div class="kb-step" data-step="2"><span></span><strong>标签化</strong><p>生成业务线、条款类型、风险标签</p></div>
+                <div class="kb-step" data-step="3"><span></span><strong>向量化</strong><p>写入语义检索索引</p></div>
+              </div>
+
+              <div class="semantic-search">
+                <input id="semanticInput" value="查询：逾期付款超过 90 天的处理规则" />
+                <button class="primary-button" id="semanticSearch">语义检索</button>
+              </div>
+              <div class="search-result" id="searchResult">
+                命中 3 条知识片段：销售合同模板 V4.1、合同审批制度 2026 版、付款条款审查清单。
+              </div>
+            </section>
+
+            <aside class="panel file-panel">
+              <div class="panel-head">
+                <div>
+                  <h2>历史文件</h2>
+                  <p>点击文件后在下方查看缩略图与结构细节</p>
+                </div>
+              </div>
+              <div class="file-list" id="fileList"></div>
+              <div class="file-preview" id="filePreview"></div>
+            </aside>
+
+          </div>
+        </section>
+
+        <section class="view" id="legalqa">
+          <section class="panel qa-panel">
+            <div class="panel-head">
+              <div>
+                <h2>AI 法律问答</h2>
+                <p>预置常见问题，回答展示依据来源，方便业务和法务快速自助。</p>
+              </div>
+              <span class="status-pill blue">基于企业知识库回答</span>
+            </div>
+            <div class="qa-grid" id="qaGrid"></div>
+            <div class="chat-input">
+              <input id="questionInput" value="合同里客户要求独家授权，应该重点看哪些风险？" />
+              <button class="primary-button" id="askButton">提问</button>
+            </div>
+            <div class="chat-window compact" id="chatWindow">
+              <div class="message ai">请选择上方 Q&A，或输入一个法律问题。系统会基于企业知识库生成带引用的回答。</div>
+            </div>
+          </section>
+        </section>
+
+        <section class="view" id="approval">
+          <div class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>审批协同</h2>
+                <p>业务提交、AI 预审、法务复核、负责人审批全链路留痕</p>
+              </div>
+              <button class="ghost-button" id="advanceFlow">推进节点</button>
+            </div>
+            <div class="timeline" id="timeline">
+              <div class="timeline-step complete">
+                <span></span>
+                <strong>业务提交</strong>
+                <p>销售部上传渠道合作协议</p>
+              </div>
+              <div class="timeline-step complete">
+                <span></span>
+                <strong>AI 预审</strong>
+                <p>识别 2 个中风险条款</p>
+              </div>
+              <div class="timeline-step active">
+                <span></span>
+                <strong>法务复核</strong>
+                <p>等待王律师确认修改意见</p>
+              </div>
+              <div class="timeline-step">
+                <span></span>
+                <strong>业务确认</strong>
+                <p>待处理</p>
+              </div>
+              <div class="timeline-step">
+                <span></span>
+                <strong>归档沉淀</strong>
+                <p>待处理</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="dashboard">
+          <div class="dashboard-grid">
+            <section class="panel chart-panel">
+              <div class="panel-head">
+                <div>
+                  <h2>风险类型分布</h2>
+                  <p>近 30 天合同审查结果</p>
+                </div>
+              </div>
+              <div class="bar-chart">
+                <div><span style="height: 82%"></span><p>付款</p></div>
+                <div><span style="height: 68%"></span><p>违约</p></div>
+                <div><span style="height: 56%"></span><p>数据</p></div>
+                <div><span style="height: 44%"></span><p>知识产权</p></div>
+                <div><span style="height: 32%"></span><p>管辖</p></div>
+              </div>
+            </section>
+            <section class="panel">
+              <h2>模型质量</h2>
+              <div class="quality-row"><span>风险召回率</span><strong>91.4%</strong></div>
+              <div class="quality-row"><span>建议采纳率</span><strong>82.0%</strong></div>
+              <div class="quality-row"><span>人工驳回率</span><strong>7.8%</strong></div>
+              <div class="quality-row"><span>平均引用命中</span><strong>2.6 条</strong></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal-backdrop" id="kbErrorModal" aria-hidden="true">
+      <div class="modal">
+        <h2>结构校验发现问题</h2>
+        <p>系统未识别到“目录”字段。你可以直接补充目录文本并覆盖当前解析结果，无需重新上传文件。</p>
+        <textarea id="fixInput">一、合同主体
+二、服务范围
+三、付款与结算
+四、违约责任
+五、知识产权
+六、争议解决</textarea>
+        <div class="modal-actions">
+          <button class="ghost-button" id="cancelFix">稍后处理</button>
+          <button class="primary-button" id="confirmFix">修改并覆盖</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast">已完成</div>
+    <script src="./app.js"></script>
+  </body>
+</html>
